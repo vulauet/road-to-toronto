@@ -1,0 +1,59 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class GoGopher {
+    private final List<Integer> evenList;
+    private final List<Integer> oddList;
+
+    public GoGopher(List<Integer> evenList, List<Integer> oddList) {
+        this.evenList = evenList;
+        this.oddList = oddList;
+    }
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        for (int i = 1; i <= t; ++i) {
+            int n = in.nextInt();
+            List<Integer> evenList = new ArrayList<>();
+            List<Integer> oddList = new ArrayList<>();
+            int walk = 0;
+            while (walk < n) {
+                evenList.add(in.nextInt());
+                walk++;
+                if (walk < n) {
+                    oddList.add(in.nextInt());
+                    walk++;
+                }
+            }
+
+            GoGopher troubleSort = new GoGopher(evenList, oddList);
+            System.out.println("Case #" + i + ": " + troubleSort.answer());
+
+        }
+    }
+
+    public String answer() {
+        int evenIndexCount = evenList.size();
+        int oddIndexCount = oddList.size();
+        Collections.sort(evenList);
+        Collections.sort(oddList);
+        if (evenList.get(0) > oddList.get(0)) {
+            return "0";
+        }
+        for (int i = evenIndexCount - 1; i > 0; i--) {
+            if (evenList.get(i) < oddList.get(i - 1)) {
+                return String.valueOf(2 * i - 1);
+            }
+        }
+        if (oddIndexCount == evenIndexCount &&
+                oddList.get(oddIndexCount - 1) < evenList.get(evenIndexCount - 1)) {
+            return String.valueOf(2 * evenIndexCount - 2);
+        }
+        return "OK";
+    }
+}
