@@ -12,7 +12,6 @@ public class OversizedPancakeFlipper {
     private static final int UPPER_BOUND = 1000000;
 
     public static void main(String[] args) {
-
         CodeJamInput input = new CodeJamInput(new OversizedPancakeFlipperParser());
         List<ICommonOutput> outputList = new ArrayList<>();
         for (int i = 0; i < input.getNumOfCase(); i++) {
