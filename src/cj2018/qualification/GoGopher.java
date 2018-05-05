@@ -1,4 +1,4 @@
-//package cj2018;
+package cj2018.qualification;//package cj2018;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

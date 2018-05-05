@@ -1,4 +1,4 @@
-package cj2018.solved;
+package cj2018.qualification;
 
 
 import java.io.BufferedReader;

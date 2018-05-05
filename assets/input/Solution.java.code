@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public class GoGopher {
+public class cj2018.qualification.GoGopher {
     private final List<Integer> evenList;
     private final List<Integer> oddList;
 
-    public GoGopher(List<Integer> evenList, List<Integer> oddList) {
+    public cj2018.qualification.GoGopher(List<Integer> evenList, List<Integer> oddList) {
         this.evenList = evenList;
         this.oddList = oddList;
     }
@@ -31,7 +31,7 @@ public class GoGopher {
                 }
             }
 
-            GoGopher troubleSort = new GoGopher(evenList, oddList);
+            cj2018.qualification.GoGopher troubleSort = new cj2018.qualification.GoGopher(evenList, oddList);
             System.out.println("Case #" + i + ": " + troubleSort.answer());
 
         }

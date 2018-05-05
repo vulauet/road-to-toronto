@@ -26,7 +26,7 @@ Java, after compilation:
   python testing_tool.py java my_main_class_name
 
 See https://code.google.com/codejam/resources/faq#languages for how we compile
-and run your solution in the language of your choice.
+and run your cubicUFOSmall in the language of your choice.
 
 Windows users:
   Follow the instructions for Linux and Mac users if you are familiar with
