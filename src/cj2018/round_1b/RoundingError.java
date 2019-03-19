@@ -1,18 +1,18 @@
-package cj2018;
+package cj2018.round_1b;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 
 
-public class Solution {
+public class RoundingError {
 
     private int numPeople;
     private int numLang;
     private ArrayList<Integer> countPerLang;
     private static Map<List<Integer>, Integer> scoreMap = new HashMap<>();
 
-    public Solution(int numPeople, int numLang, ArrayList<Integer> countPerLang) {
+    public RoundingError(int numPeople, int numLang, ArrayList<Integer> countPerLang) {
         this.numPeople = numPeople;
         this.numLang = numLang;
         this.countPerLang = countPerLang;
@@ -31,7 +31,7 @@ public class Solution {
             }
 
             scoreMap = new HashMap<>();
-            System.out.println("Case #" + i + ": " + new Solution(N, L, countPerLang).answer());
+            System.out.println("Case #" + i + ": " + new RoundingError(N, L, countPerLang).answer());
         }
     }
 
@@ -82,7 +82,7 @@ public class Solution {
 //                        List<Integer> countPerLangIncrease = new ArrayList<>(countPerLang);
 //                        countPerLangIncrease.set(i, countPerLangIncrease.get(i) + 1);
 //                        if (!scoreMap.containsKey(countPerLangIncrease)) {
-//                            scoreMap.put(countPerLangIncrease, new Solution(numPeople, numLang, countPerLangIncrease).answer());
+//                            scoreMap.put(countPerLangIncrease, new RoundingError(numPeople, numLang, countPerLangIncrease).answer());
 //                        }
 //                        answers.add(scoreMap.get(countPerLangIncrease));
 //                    }
@@ -90,7 +90,7 @@ public class Solution {
 //                List<Integer> countPerLangIncrease = new ArrayList<>(countPerLang);
 //                countPerLangIncrease.add(1);
 //                if (!scoreMap.containsKey(countPerLangIncrease)) {
-//                    scoreMap.put(countPerLangIncrease, new Solution(numPeople, numLang, countPerLangIncrease).answer());
+//                    scoreMap.put(countPerLangIncrease, new RoundingError(numPeople, numLang, countPerLangIncrease).answer());
 //                }
 //                answers.add(scoreMap.get(countPerLangIncrease));
 //                return Collections.max(answers);
