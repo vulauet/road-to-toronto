@@ -41,7 +41,7 @@ public class TrainTimetable {
         for (TripNode trip : nbTrips) if (trip.prev == null) result[1] += 1;
 
 //        printTrip(naTrips);
-//        System.out.println("-------");
+//        System.out.print("-------");
 //        printTrip(nbTrips);
 
         return result;

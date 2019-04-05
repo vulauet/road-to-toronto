@@ -7,7 +7,6 @@ public class PlayGround {
     public static void main(String[] args) {
         List<Integer> integers = Arrays.asList(5, 10, 20, 49, 100, 12);
         for (Integer A : integers) {
-
             findPair(A);
         }
     }

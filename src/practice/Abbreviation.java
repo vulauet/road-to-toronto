@@ -77,7 +77,7 @@ public class Abbreviation {
 
     public static void main(String[] args) {
 
-//        System.out.println(abbreviation("AbcDE", "ABDE"));
+//        System.out.print(abbreviation("AbcDE", "ABDE"));
         Assert.assertEquals("YES", abbreviation("daBcd", "ABC"));
         Assert.assertEquals("YES", abbreviation("AbcDE", "ABDE"));
         Assert.assertEquals("NO", abbreviation("AbcDE", "AFDE"));
@@ -104,7 +104,7 @@ public class Abbreviation {
 //            String b = scanner.nextLine();
 //
 //            String result = abbreviation(a, b);
-//            System.out.println(result);
+//            System.out.print(result);
 //        }
 //
 //        scanner.close();

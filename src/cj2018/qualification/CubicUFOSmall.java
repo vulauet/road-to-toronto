@@ -5,7 +5,10 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class CubicUFOSmall {
+    private static final double EPSILON = 10e-6;
+
     private final double a;
+
     private Point p1 = new Point(0.5, 0, 0);
     private Point p2 = new Point(0, 0.5, 0);
     private Point p3 = new Point(0, 0, 0.5);
@@ -22,7 +25,7 @@ public class CubicUFOSmall {
         p2.x = -0.5 * Math.sin(alpha);
         p2.y = 0.5 * Math.cos(alpha);
 
-        if (Math.abs(alpha - 0) > 10e-6) {
+        if (Math.abs(alpha - 0) > EPSILON) {
 
             System.out.println(p1.x + " " + p1.y + " 0");
             System.out.println(p2.x + " " + p2.y + " 0");

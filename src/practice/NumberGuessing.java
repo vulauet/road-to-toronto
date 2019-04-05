@@ -35,7 +35,7 @@ public class NumberGuessing {
                 result = in.next();
             }
 
-//            System.out.println("Case #" + i + ": " + +" " +);
+//            System.out.print("Case #" + i + ": " + +" " +);
         }
 
     }

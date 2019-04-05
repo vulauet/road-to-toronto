@@ -1,5 +1,9 @@
 package math_utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by vula on 16/08/2017.
  */
@@ -56,6 +60,20 @@ public class BaseUtils {
         return result;
     }
 
+
+    /**
+     * Convert an integer to a list of digits
+     * ex: 1234 -> {1, 2, 3, 4}
+     * */
+    public static List<Integer> toDigit(int n) {
+        List<Integer> digitList = new ArrayList<>();
+        while (n > 0) {
+            digitList.add(n % 10);
+            n /= 10;
+        }
+        Collections.reverse(digitList);
+        return digitList;
+    }
 
 //    Integer.toBinaryString(n);
 //    Integer.toOctalString(n);
