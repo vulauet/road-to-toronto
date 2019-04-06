@@ -12,95 +12,116 @@ public class Solution {
             int n = in.nextInt();
             int b = in.nextInt();
             int f = in.nextInt();
-            List<Integer> brokenWorkers = solve(n, b, in);
+
+            List<String> msgList = constructMsgList(n);
+            List<String> rspList = new ArrayList<>();
+            for (String msg : msgList) {
+                System.out.println(msg);
+                rspList.add(in.next());
+            }
+
+            List<Integer> brokenWorkers = solve(n, b, rspList);
             StringBuilder sb = new StringBuilder();
             for (Integer brokenWorker : brokenWorkers) sb.append(brokenWorker).append(" ");
             System.out.println("Case #" + i + ": " + sb.toString());
+
         }
     }
 
-    private static List<Integer> solve(int n, int b, Scanner responses) {
-        PriorityQueue<DefectRange> pq = new PriorityQueue<>(Comparator.comparingInt(DefectRange::getLo));
-        DefectRange initRange = new DefectRange(0, n, b);
-        pq.add(initRange);
-        List<Integer> results = new ArrayList<>();
-        while (!pq.isEmpty()) {
+    private static int log2(int i) {
+        return (int) (Math.log(i) / Math.log(2));
+    }
 
-            StringBuilder sb = new StringBuilder();
+    private static List<String> constructMsgList(int n) {
+        List<String> msgList = new ArrayList<>();
+        int splitPoint = (int) Math.pow(2, log2(n - 1));
+        while (splitPoint >= 1) {
             int bit = 1;
-            while (!pq.isEmpty()) {
-                DefectRange defectRange = pq.poll();
-                for (int i = sb.length(); i < defectRange.lo; i++) sb.append(bit);
-                bit = flipBit(bit);
-                for (int i = defectRange.lo; i < defectRange.hi; i++) {
-                    sb.append(bit);
-                    if ((i - defectRange.lo) % defectRange.defectCount == 0) {
-                        bit = flipBit(bit);
-                    }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i <= n; i++) {
+                sb.append(bit);
+                if (i % splitPoint == 0) {
+                    bit = 1 - bit;
                 }
-                bit = flipBit(bit);
             }
-            String msg = sb.toString();
-            System.out.println(msg);
-            String resp = responses.next();
-            processResponse(msg, resp, pq, results);
+            msgList.add(sb.toString());
+            splitPoint /= 2;
         }
-
-
+        return msgList;
     }
 
-    private static void processResponse(
-            String msg,
-            String resp,
-            PriorityQueue<DefectRange> pq,
+    private static List<Integer> solve(int n, int b, List<String> responses) {
+        List<Integer> results = new ArrayList<>();
+        if (responses.size() == 5) {
+            return solveLarge(n, responses, results);
+        } else {
+            return solveSmall(n, b, responses, results);
+        }
+    }
+
+    private static List<Integer> solveSmall(
+            int n,
+            int b,
+            List<String> responses,
             List<Integer> results
     ) {
-        String[] msgSplit = splitMsg(msg);
-        String[] rspSplit = splitMsg(resp);
-        int msgCursor = 0;
-        int rspCursor = 0;
 
-        while (msgCursor < msgSplit.length) {
+        List<String> firstResp = Arrays.asList(responses.get(0)
+                                                        .replaceAll("01", "0 1")
+                                                        .replaceAll("10", "1 0")
+                                                        .split(" "));
 
+        int seqLength = 8;
+        if (n % seqLength > 0 && firstResp.size() < n / seqLength + 1) {
+            for (int i = n - n % seqLength; i < n; i++) {
+                results.add(i);
+            }
         }
+
+        int walk = 0;
+        for (int i = 0; i < firstResp.size(); i++) {
+            int respLength = firstResp.get(i).length();
+            if (respLength < seqLength) {
+                List<String> subResponses = new ArrayList<>();
+                for (int j = 1; j < responses.size(); j++) {
+                    subResponses.add(responses.get(j).substring(walk, walk + respLength));
+                    walk += respLength;
+                }
+                List<Integer> subResults = solve(seqLength, seqLength - respLength, subResponses);
+                for (Integer subResult : subResults) results.add(i * seqLength + subResult);
+            }
+        }
+        Collections.sort(results);
+        return results;
     }
 
-    private static String[] splitMsg(String msg) {
-        return msg.replaceAll("01", "0 1").replaceAll("10", "1 0").split(" ");
-    }
+    private static List<Integer> solveLarge(int n, List<String> responses, List<Integer> results) {
+        List<String> firstResp = Arrays.asList(responses.get(0)
+                                                        .replaceAll("01", "0 1")
+                                                        .replaceAll("10", "1 0")
+                                                        .split(" "));
 
-    private static int flipBit(int bit) {
-        return 1 - bit;
-    }
+        if (n % 16 > 0)
+            if (firstResp.size() < n / 16 + 1) {
+                for (int i = n - n % 16; i < n; i++) results.add(i);
+            }
 
-    private static class DefectRange {
-        int lo;
-        int hi;
-        int defectCount;
+        int walk = 0;
+        for (int i = 0; i < firstResp.size(); i++) {
+            int respLength = firstResp.get(i).length();
+            if (respLength < 16) {
+                List<String> subResponses = new ArrayList<>();
+                for (int j = 1; j < responses.size() - 1; j++) {
+                    subResponses.add(responses.get(j).substring(walk, walk + respLength));
+                    walk += respLength;
+                }
+                List<Integer> subResults = solve(16, 16 - respLength, subResponses);
+                for (Integer subResult : subResults) results.add(i * 16 + subResult);
+            }
 
-        DefectRange(int lo, int hi, int defectCount) {
-            this.lo = lo;
-            this.hi = hi;
-            this.defectCount = defectCount;
+
         }
-
-        public int getLo() {
-            return lo;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            DefectRange that = (DefectRange) o;
-            return lo == that.lo &&
-                    hi == that.hi &&
-                    defectCount == that.defectCount;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(lo, hi, defectCount);
-        }
+        Collections.sort(results);
+        return results;
     }
 }
