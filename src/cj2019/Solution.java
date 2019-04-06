@@ -20,12 +20,25 @@ public class Solution {
                 rspList.add(in.next());
             }
 
-            List<Integer> brokenWorkers = solve(n, b, rspList);
+
+//            List<Integer> brokenWorkers = solve(n, b, rspList);
+            List<Integer> brokenWorkers = solveXor(n, b, msgList, rspList);
             StringBuilder sb = new StringBuilder();
             for (Integer brokenWorker : brokenWorkers) sb.append(brokenWorker).append(" ");
             System.out.println("Case #" + i + ": " + sb.toString());
 
         }
+    }
+
+    private static List<Integer> solveXor(
+            int n,
+            int b,
+            List<String> msgList,
+            List<String> rspList
+    ) {
+        Map<Integer, Integer> validIndexMap = new HashMap<>();
+
+        return null;
     }
 
     private static int log2(int i) {
@@ -65,32 +78,37 @@ public class Solution {
             List<String> responses,
             List<Integer> results
     ) {
-
         List<String> firstResp = Arrays.asList(responses.get(0)
                                                         .replaceAll("01", "0 1")
                                                         .replaceAll("10", "1 0")
                                                         .split(" "));
 
-        int seqLength = 8;
-        if (n % seqLength > 0 && firstResp.size() < n / seqLength + 1) {
-            for (int i = n - n % seqLength; i < n; i++) {
-                results.add(i);
-            }
-        }
-
         int walk = 0;
+        int stepSize = 16;
         for (int i = 0; i < firstResp.size(); i++) {
             int respLength = firstResp.get(i).length();
-            if (respLength < seqLength) {
+            if (respLength < stepSize) {
                 List<String> subResponses = new ArrayList<>();
                 for (int j = 1; j < responses.size(); j++) {
                     subResponses.add(responses.get(j).substring(walk, walk + respLength));
                     walk += respLength;
                 }
-                List<Integer> subResults = solve(seqLength, seqLength - respLength, subResponses);
-                for (Integer subResult : subResults) results.add(i * seqLength + subResult);
+
+                int newN = i < firstResp.size() - 1 ? stepSize : Math.min(n % 16, stepSize);
+                if (newN - respLength > 0) {
+                    List<Integer> subResults = solve(newN, newN - respLength, subResponses);
+                    for (Integer subResult : subResults) results.add(i * stepSize + subResult);
+                }
+            }
+
+        }
+
+        if (n % stepSize > 0 && firstResp.size() < n / stepSize + 1) {
+            for (int i = n - n % stepSize; i < n; i++) {
+                results.add(i);
             }
         }
+
         Collections.sort(results);
         return results;
     }
@@ -101,26 +119,32 @@ public class Solution {
                                                         .replaceAll("10", "1 0")
                                                         .split(" "));
 
-        if (n % 16 > 0)
-            if (firstResp.size() < n / 16 + 1) {
-                for (int i = n - n % 16; i < n; i++) results.add(i);
-            }
-
         int walk = 0;
+        int stepSize = 16;
         for (int i = 0; i < firstResp.size(); i++) {
             int respLength = firstResp.get(i).length();
-            if (respLength < 16) {
+            if (respLength < stepSize) {
                 List<String> subResponses = new ArrayList<>();
-                for (int j = 1; j < responses.size() - 1; j++) {
+                for (int j = 1; j < responses.size(); j++) {
                     subResponses.add(responses.get(j).substring(walk, walk + respLength));
                     walk += respLength;
                 }
-                List<Integer> subResults = solve(16, 16 - respLength, subResponses);
-                for (Integer subResult : subResults) results.add(i * 16 + subResult);
+
+                int newN = i < firstResp.size() - 1 ? stepSize : Math.min(n % 16, stepSize);
+                if (newN - respLength > 0) {
+                    List<Integer> subResults = solve(newN, newN - respLength, subResponses);
+                    for (Integer subResult : subResults) results.add(i * stepSize + subResult);
+                }
             }
 
-
         }
+
+        if (n % stepSize > 0 && firstResp.size() < n / stepSize + 1) {
+            for (int i = n - n % stepSize; i < n; i++) {
+                results.add(i);
+            }
+        }
+
         Collections.sort(results);
         return results;
     }
