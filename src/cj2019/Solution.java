@@ -3,6 +3,8 @@ package cj2019;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Solution {
     public static void main(String[] args) {
@@ -37,8 +39,21 @@ public class Solution {
             List<String> rspList
     ) {
         Map<Integer, Integer> validIndexMap = new HashMap<>();
-
-        return null;
+        for (int i = 0; i < n - b; i++) {
+            int k = 0;
+            for (int j = 0; j < msgList.size(); j++) {
+                if ((rspList.get(j).charAt(i) ^ msgList.get(j).charAt(k)) != 0) {
+                    k++;
+                    break;
+                }
+            }
+            validIndexMap.put(i, k);
+        }
+        Set<Integer> validIndexSet = new HashSet<>(validIndexMap.values());
+        return IntStream.range(0, n)
+                        .filter(i -> !validIndexSet.contains(i))
+                        .boxed()
+                        .collect(Collectors.toList());
     }
 
     private static int log2(int i) {
