@@ -1,4 +1,4 @@
-package cj2019;
+package cj2019.qualification;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
