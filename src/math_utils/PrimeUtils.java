@@ -28,4 +28,8 @@ public class PrimeUtils {
                     prime[j] = false;
         return prime;
     }
+
+    public static void main(String[] args) {
+        sieve(1000000);
+    }
 }
