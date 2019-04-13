@@ -1,0 +1,61 @@
+package practice;
+
+import org.junit.Assert;
+
+import java.util.Scanner;
+
+public class ArrayManipulation {
+    static long arrayManipulation(int n, int[][] queries) {
+        long[] arr = new long[n];
+        for (int[] query : queries) {
+            arr[query[0] - 1] += query[2];
+            if (query[1] < n) arr[query[1]] -= query[2];
+        }
+        long walker = 0;
+        long max = 0;
+        for (int i = 0; i < n; i++) {
+            walker += arr[i];
+            if (walker > max) max = walker;
+        }
+        return max;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        Assert.assertEquals(
+                10,
+                arrayManipulation(10, new int[][]{{1, 5, 3}, {4, 8, 7}, {6, 9, 1}})
+        );
+        Assert.assertEquals(
+                200,
+                arrayManipulation(5, new int[][]{{1, 2, 100}, {2, 5, 100}, {3, 4, 100}})
+        );
+        Assert.assertEquals(
+                31,
+                arrayManipulation(5, new int[][]{{2, 6, 8}, {3, 5, 7}, {1, 8, 1}, {5, 9, 15}})
+        );
+
+        String[] nm = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nm[0]);
+
+        int m = Integer.parseInt(nm[1]);
+
+        int[][] queries = new int[m][3];
+
+        for (int i = 0; i < m; i++) {
+            String[] queriesRowItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int j = 0; j < 3; j++) {
+                int queriesItem = Integer.parseInt(queriesRowItems[j]);
+                queries[i][j] = queriesItem;
+            }
+        }
+
+        long result = arrayManipulation(n, queries);
+        System.out.println(result);
+        scanner.close();
+    }
+}
