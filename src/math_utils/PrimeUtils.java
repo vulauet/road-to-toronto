@@ -22,7 +22,7 @@ public class PrimeUtils {
         prime[0] = false;
         prime[1] = false;
         int m = (int) Math.sqrt(n);
-        for (int i = 2; i <= m; i++)
+         for (int i = 2; i <= m; i++)
             if (prime[i])
                 for (int j = i * i; j <= n; j += i)
                     prime[j] = false;
