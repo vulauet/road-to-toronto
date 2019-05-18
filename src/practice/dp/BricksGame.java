@@ -12,47 +12,68 @@ public class BricksGame {
          * Write your code here.
          */
 
+        return bigBricksGame(arr);
+//        return smallBricksGame(arr);
+    }
+
+    private static long bigBricksGame(int[] arr) {
+        long[] maxPerTurn = new long[arr.length];
+        long accumulate = 0;
+        for (int i = arr.length - 1; i >= 0; i--) {
+            accumulate += arr[i];
+            if (i >= arr.length - 3) {
+                maxPerTurn[i] = accumulate;
+            } else {
+                maxPerTurn[i] = accumulate - Collections.min(Arrays.asList(
+                        maxPerTurn[i + 1],
+                        maxPerTurn[i + 2],
+                        maxPerTurn[i + 3]
+                ));
+            }
+        }
+        return maxPerTurn[0];
+    }
+
+    private static long smallBricksGame(int[] arr) {
         long sum = 0;
-        long[] ans = new long[arr.length];
-        for (int i = 0; i < 3; i++) {
-            sum += arr[i];
-            ans[i] = sum;
+        for (int i : arr) {
+            sum += i;
         }
 
-        for (int i = 3; i < ans.length; i++) {
-            sum += arr[i];
-            long min = Collections.min(Arrays.asList(ans[i - 3], ans[i - 2], ans[i - 1]));
-            ans[i] = sum - min;
-        }
+        return smallBricksGame(arr, sum, 0);
+    }
 
-        for (long val : ans) {
-            System.out.print(val + " ");
-        }
-        System.out.println();
-        return ans[ans.length - 1];
+    private static long smallBricksGame(int[] arr, long sum, int start) {
+        if (start + 3 >= arr.length) return sum;
+        return sum - Collections.min(Arrays.asList(
+                smallBricksGame(arr, sum - arr[start], start + 1),
+                smallBricksGame(arr, sum - arr[start] - arr[start + 1], start + 2),
+                smallBricksGame(arr, sum - arr[start] - arr[start + 1] - arr[start + 2],
+                        start + 3)
+        ));
     }
 
     public static void main(String[] args) {
         Assert.assertEquals(1001, bricksGame(new int[]{999, 1, 1, 1, 0}));
         Assert.assertEquals(999, bricksGame(new int[]{0, 1, 1, 1, 999}));
 
-        Scanner scanner = new Scanner(System.in);
-        int t = Integer.parseInt(scanner.nextLine().trim());
-
-        for (int tItr = 0; tItr < t; tItr++) {
-            int arrCount = Integer.parseInt(scanner.nextLine().trim());
-
-            int[] arr = new int[arrCount];
-
-            String[] arrItems = scanner.nextLine().split(" ");
-
-            for (int arrItr = 0; arrItr < arrCount; arrItr++) {
-                int arrItem = Integer.parseInt(arrItems[arrItr].trim());
-                arr[arrItr] = arrItem;
-            }
-
-            long result = bricksGame(arr);
-            System.out.println(result);
-        }
+//        Scanner scanner = new Scanner(System.in);
+//        int t = Integer.parseInt(scanner.nextLine().trim());
+//
+//        for (int tItr = 0; tItr < t; tItr++) {
+//            int arrCount = Integer.parseInt(scanner.nextLine().trim());
+//
+//            int[] arr = new int[arrCount];
+//
+//            String[] arrItems = scanner.nextLine().split(" ");
+//
+//            for (int arrItr = 0; arrItr < arrCount; arrItr++) {
+//                int arrItem = Integer.parseInt(arrItems[arrItr].trim());
+//                arr[arrItr] = arrItem;
+//            }
+//
+//            long result = bricksGame(arr);
+//            System.out.println(result);
+//        }
     }
 }

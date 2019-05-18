@@ -1,4 +1,4 @@
-package practice;
+package practice.dp;
 
 import org.junit.Assert;
 
@@ -7,7 +7,6 @@ public class SubstringDiff {
     static int substringDiff(int k, String s1, String s2) {
         throw new UnsupportedOperationException();
     }
-
 
     public static void main(String[] args) {
         Assert.assertEquals(4, substringDiff(2, "tabriz", "torino"));
